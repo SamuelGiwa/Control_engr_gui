@@ -40,13 +40,13 @@ class ProcessControlApp:
         self.root = root
         self.root.title("Process Control Teaching Tool")
 
-        # Initialize process and controller
+        # process and controller initialization
         self.process = FirstOrderProcess()
         self.controller = PIDController()
         self.setpoint = 1.0
         self.time = 0
-        self.running = False  # Flag to control the simulation loop
-        self.paused = False  # Flag for pausing
+        self.running = False  # Flag controls simulation loop
+        self.paused = False  #  pausing flag
 
         # Data for plotting
         self.time_data = [0]
@@ -94,6 +94,7 @@ class ProcessControlApp:
         self.reset_button.grid(row=7, column=0, columnspan=2, pady=5)
 
         # Plot Frame
+        # Plot Frame
         plot_frame = ttk.LabelFrame(self.root, text="Process Response")
         plot_frame.grid(row=0, column=1, padx=10, pady=10)
 
@@ -101,12 +102,15 @@ class ProcessControlApp:
         self.ax.set_title("Process Response")
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Process Variable")
+        self.ax.set_xlim(0, 50)  # Fix x-axis range, adjust as needed
+        self.ax.set_ylim(0, 2)   # Fix y-axis range, adjust as needed
         self.line_process, = self.ax.plot(self.time_data, self.process_data, label="Process Variable")
         self.line_setpoint, = self.ax.plot(self.time_data, self.setpoint_data, label="Setpoint", linestyle="--")
         self.ax.legend()
 
         self.canvas = FigureCanvasTkAgg(self.figure, plot_frame)
         self.canvas.get_tk_widget().pack()
+
 
     def start_simulation(self):
         if not self.running: 
@@ -133,10 +137,13 @@ class ProcessControlApp:
         self.ax.set_title("Process Response")
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Process Variable")
+        self.ax.set_xlim(0, 50)  
+        self.ax.set_ylim(0, 2)  
         self.line_process, = self.ax.plot(self.time_data, self.process_data, label="Process Variable")
         self.line_setpoint, = self.ax.plot(self.time_data, self.setpoint_data, label="Setpoint", linestyle="--")
         self.ax.legend()
         self.canvas.draw()
+
 
     def update_controller_parameters(self):
         self.controller.kp = float(self.kp_entry.get())
@@ -148,7 +155,7 @@ class ProcessControlApp:
         if self.running and not self.paused:
             dt = self.process.dt
 
-            # Compute control action
+            #  control action compuation
             control_signal = self.controller.compute(self.setpoint, self.process.output)
 
             # Step the process
@@ -162,7 +169,7 @@ class ProcessControlApp:
             self.process_data.append(process_variable)
             self.setpoint_data.append(self.setpoint)
 
-            # Update plot
+            # plot update
             self.line_process.set_data(self.time_data, self.process_data)
             self.line_setpoint.set_data(self.time_data, self.setpoint_data)
             self.ax.relim()
