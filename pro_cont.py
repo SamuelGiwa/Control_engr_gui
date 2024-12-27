@@ -57,6 +57,15 @@ class ProcessControlApp:
         self.create_widgets()
 
     def create_widgets(self):
+        #######################################
+        # Process_frame = ttk.LabelFrame(self.root, text="Process Parameters")
+        # Process_frame.grid(row=0, column=0, padx=5, pady=5)
+        # ttk.Label(Process_frame, text="Process gain").grid(row=0, column=0)
+        # self.kp_entry = ttk.Entry(Process_frame, width=10)
+        # self.kp_entry.insert(0, "1.0")
+        # self.kp_entry.grid(row=0, column=1)
+        ######################################
+        
         # Control Panel
         control_frame = ttk.LabelFrame(self.root, text="Control Parameters")
         control_frame.grid(row=0, column=0, padx=10, pady=10)
@@ -93,7 +102,7 @@ class ProcessControlApp:
         self.reset_button = ttk.Button(control_frame, text="Reset Simulation", command=self.reset_simulation)
         self.reset_button.grid(row=7, column=0, columnspan=2, pady=5)
 
-        # Plot Frame
+        
         # Plot Frame
         plot_frame = ttk.LabelFrame(self.root, text="Process Response")
         plot_frame.grid(row=0, column=1, padx=10, pady=10)
@@ -102,8 +111,8 @@ class ProcessControlApp:
         self.ax.set_title("Process Response")
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Process Variable")
-        self.ax.set_xlim(0, 50)  # Fix x-axis range, adjust as needed
-        self.ax.set_ylim(0, 2)   # Fix y-axis range, adjust as needed
+        self.ax.set_xlim(0, 50)  
+        self.ax.set_ylim(0, 2)   
         self.line_process, = self.ax.plot(self.time_data, self.process_data, label="Process Variable")
         self.line_setpoint, = self.ax.plot(self.time_data, self.setpoint_data, label="Setpoint", linestyle="--")
         self.ax.legend()
@@ -177,7 +186,7 @@ class ProcessControlApp:
             self.canvas.draw()
 
         if self.running:
-            self.root.after(int(self.process.dt * 1000), self.update_simulation)
+            self.root.after(int(self.process.dt * 100), self.update_simulation)
 
 
 if __name__ == "__main__":
