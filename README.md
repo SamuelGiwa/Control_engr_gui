@@ -80,9 +80,8 @@ Contributions are welcome! Feel free to fork the repository and submit a pull re
 
 For questions or suggestions, please contact:
 
-- **Name:** Samuel Boluwatife Giwa
 - **Email:** <Samuelgiwa41@gmail.com>
-- **LinkedIn:** 
+- **LinkedIn:** <www.linkedin.com/in/samuel-giwa-8b437a221>
 
 ---
 Thank you for using the Process Control Teaching Tool!
