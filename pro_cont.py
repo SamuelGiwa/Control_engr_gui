@@ -6,7 +6,7 @@ import numpy as np
 
 # process model
 class FirstOrderProcess:
-    def __init__(self, gain=1, time_constant=5, dt=0.1):
+    def __init__(self, gain=1, time_constant=10, dt=0.1):
         self.gain = gain
         self.time_constant = time_constant
         self.dt = dt
@@ -57,13 +57,26 @@ class ProcessControlApp:
         self.create_widgets()
 
     def create_widgets(self):
+        
         #######################################
-        # Process_frame = ttk.LabelFrame(self.root, text="Process Parameters")
-        # Process_frame.grid(row=0, column=0, padx=5, pady=5)
-        # ttk.Label(Process_frame, text="Process gain").grid(row=0, column=0)
-        # self.kp_entry = ttk.Entry(Process_frame, width=10)
-        # self.kp_entry.insert(0, "1.0")
-        # self.kp_entry.grid(row=0, column=1)
+        # Create a LabelFrame for Process Parameters
+        self.Process_frame = ttk.LabelFrame(self.root, text="Process Parameters")
+        self.Process_frame.grid(row=0, column=0, padx=10, pady=5, sticky="nsew")
+
+        # Add Labels and Entry Widgets for Process Parameters
+        ttk.Label(self.Process_frame, text="K").grid(row=0, column=0, padx=5, pady=5)
+        self.k_entry = ttk.Entry(self.Process_frame, width=10)
+        self.k_entry.insert(0, "1.0")
+        self.k_entry.grid(row=0, column=1, padx=5, pady=5)
+
+        ttk.Label(self.Process_frame, text="Tc").grid(row=1, column=0, padx=5, pady=5)
+        self.Tc_entry = ttk.Entry(self.Process_frame, width=10)
+        self.Tc_entry.insert(0, "0.0")
+        self.Tc_entry.grid(row=1, column=1, padx=5, pady=5)
+        
+        self.params_button = ttk.Button(self.Process_frame, text="Set Parameters", command=self.start_simulation)
+        self.params_button.grid(row=2, column=0, columnspan=2, pady=5)
+        
         ######################################
         
         # Control Panel
@@ -112,7 +125,7 @@ class ProcessControlApp:
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Process Variable")
         self.ax.set_xlim(0, 50)  
-        self.ax.set_ylim(0, 2)   
+        self.ax.set_ylim(0, 3)   
         self.line_process, = self.ax.plot(self.time_data, self.process_data, label="Process Variable")
         self.line_setpoint, = self.ax.plot(self.time_data, self.setpoint_data, label="Setpoint", linestyle="--")
         self.ax.legend()
@@ -127,6 +140,7 @@ class ProcessControlApp:
             self.paused = False
             self.update_controller_parameters()
             self.update_simulation()
+      
 
     def stop_simulation(self):
         self.running = False
@@ -147,7 +161,7 @@ class ProcessControlApp:
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Process Variable")
         self.ax.set_xlim(0, 50)  
-        self.ax.set_ylim(0, 2)  
+        self.ax.set_ylim(0, 4)  
         self.line_process, = self.ax.plot(self.time_data, self.process_data, label="Process Variable")
         self.line_setpoint, = self.ax.plot(self.time_data, self.setpoint_data, label="Setpoint", linestyle="--")
         self.ax.legend()
@@ -163,6 +177,7 @@ class ProcessControlApp:
     def update_simulation(self):
         if self.running and not self.paused:
             dt = self.process.dt
+            
 
             #  control action compuation
             control_signal = self.controller.compute(self.setpoint, self.process.output)
@@ -172,7 +187,7 @@ class ProcessControlApp:
 
             # time update
             self.time += dt
-
+            print(self.time)
             # data update for plotting
             self.time_data.append(self.time)
             self.process_data.append(process_variable)
@@ -184,9 +199,14 @@ class ProcessControlApp:
             self.ax.relim()
             self.ax.autoscale_view()
             self.canvas.draw()
+            if self.time >= 40:
+                self.running = False
 
         if self.running:
             self.root.after(int(self.process.dt * 100), self.update_simulation)
+            
+        
+        
 
 
 if __name__ == "__main__":

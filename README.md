@@ -82,6 +82,7 @@ For questions or suggestions, please contact:
 
 - **Name:** Samuel Boluwatife Giwa
 - **Email:** <Samuelgiwa41@gmail.com>
+- **LinkedIn:** 
 
 ---
 Thank you for using the Process Control Teaching Tool!
