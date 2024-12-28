@@ -173,6 +173,8 @@ class ProcessControlApp:
         self.controller.ki = float(self.ki_entry.get())
         self.controller.kd = float(self.kd_entry.get())
         self.setpoint = float(self.setpoint_entry.get())
+        self.process.gain = float(self.k_entry.get())
+        self.process.time_constant = float(self.Tc_entry.get())
 
     def update_simulation(self):
         if self.running and not self.paused:
