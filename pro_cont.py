@@ -2,7 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from tkinter import messagebox
 import numpy as np
+import sys
 
 # process model
 class FirstOrderProcess:
@@ -39,6 +41,7 @@ class ProcessControlApp:
     def __init__(self, root):
         self.root = root
         self.root.title("Process Control Teaching Tool")
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
 
         # process and controller initialization
         self.process = FirstOrderProcess()
@@ -55,6 +58,8 @@ class ProcessControlApp:
 
         # Create GUI elements
         self.create_widgets()
+        
+        
 
     def create_widgets(self):
         
@@ -206,11 +211,13 @@ class ProcessControlApp:
 
         if self.running:
             self.root.after(int(self.process.dt * 100), self.update_simulation)
-            
-        
-        
-
-
+    
+    def on_close(self):
+        """Handle the close button event to terminate the terminal."""
+        close_ = messagebox.askokcancel("Quit", "Do you want to quit the application?")
+        if close_:
+            sys.exit()
+                                                
 if __name__ == "__main__":
     root = tk.Tk()
     app = ProcessControlApp(root)
