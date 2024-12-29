@@ -2,9 +2,11 @@ import tkinter as tk
 from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from tkinter import messagebox
+from tkinter import messagebox, font
 import numpy as np
 import sys
+
+
 
 # process model
 class FirstOrderProcess:
@@ -38,6 +40,7 @@ class PIDController:
 
 # Tkinter GUI Application
 class ProcessControlApp:
+    
     def __init__(self, root):
         self.root = root
         self.root.title("Process Control Teaching Tool")
@@ -63,6 +66,8 @@ class ProcessControlApp:
 
     def create_widgets(self):
         
+        default_font = font.nametofont("TkDefaultFont")
+        default_font.configure(size=14)
         #######################################
         # Create a LabelFrame for Process Parameters
         self.Process_frame = ttk.LabelFrame(self.root, text="Process Parameters")
